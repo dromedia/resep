@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "778846575160",
+    "project_id": "resep-makanan-a148e",
+    "storage_bucket": "resep-makanan-a148e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778846575160:android:0b6a7c362bd71a7b7324cd",
+        "android_client_info": {
+          "package_name": "com.amungme.resepmakanan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778846575160-3g8a4j937e02nsmr4b07qcjonupteq5h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCCOS50_i6TpvEsaxbNyvJ7elCCoLDbFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778846575160-3g8a4j937e02nsmr4b07qcjonupteq5h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
