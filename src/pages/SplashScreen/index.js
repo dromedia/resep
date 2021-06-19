@@ -1,13 +1,24 @@
-import React, {useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Logo} from '../../assets';
 import {Gap} from '../../components';
 import Constant from '../../config/Constant';
 
 const SplashScreen = ({navigation}) => {
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('MainApp');
+      AsyncStorage.getItem('alreadyLaunched').then(value => {
+        if (value === null) {
+          AsyncStorage.setItem('alreadyLaunched', 'true');
+          setIsFirstLaunch(true);
+          navigation.navigate('Gdpr');
+        } else {
+          setIsFirstLaunch(false);
+          navigation.replace('MainApp');
+        }
+      });
     }, 2000);
   }, []);
 

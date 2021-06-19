@@ -1,115 +1,33 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  // TextInput,
-  StatusBar,
-  Image,
-  Dimensions,
-  SafeAreaView,
-} from 'react-native';
-import {
-  BannerAds,
-  FoodCard,
-  FoodList,
-  FoodListItem,
-  Gap,
-  Header,
-  Rating,
-  TextInput,
-} from '../../components';
-import axios from 'axios';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import Constant from '../../config/Constant';
-
-import {BASE_URL} from '../../utilities';
-import {IconFavActive, IconFav, IconClose} from '../../assets';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  getRecipesData,
-  searchRecipes,
-  addToFavorite,
-  removeFromFavorite,
-  filterData,
-} from '../../redux/action';
+import {BannerAds, FoodCard, FoodListItem, Gap, Header} from '../../components';
+import Constant from '../../config/Constant';
+import {getRecipesData} from '../../redux/action';
 
 const Home = ({navigation}) => {
-  const [search, setSearch] = useState('');
-  const [filterData, setFilterData] = useState([]);
-  const [masterData, setMasterData] = useState([]);
   const dispatch = useDispatch();
-  const {recipes, favorite} = useSelector(state => state.homeReducer);
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
+  const {recipes} = useSelector(state => state.homeReducer);
+  const [favorites, setFavorites] = useState([]);
 
-  // const getResep = () => {
-  //   axios
-  //     .get('https://dromedia.co/app/kebab.json')
-  //     .then(res => {
-  //       setFilterData(res.data);
-  //       setResep(res.data);
-  //     })
-  //     .catch(err => {});
-  // };
   useEffect(() => {
     dispatch(getRecipesData());
-    dispatch(searchRecipes());
   }, [dispatch]);
 
-  const searchFilter = text => {
-    if (text) {
-      const newData = recipes.filter(item => {
-        const itemData = item.judul.toLowerCase();
-        const textData = text;
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilterData(newData);
-      setSearch(text);
-    } else {
-      setFilterData(recipes);
-      setSearch(text);
+  useEffect(() => {
+    getFavorites();
+  }, [favorites]);
+
+  const getFavorites = async () => {
+    try {
+      const recipeFavorites = await AsyncStorage.getItem('recipe_fav');
+      if (recipeFavorites !== null) {
+        setFavorites(JSON.parse(recipeFavorites));
+      }
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  const searchFilterFunction = text => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
-    }
-  };
-
-  const onTapAddToFavorite = recipe => {
-    addToFavorite(recipe);
-  };
-
-  const onTapRemoveFromFavorite = recipe => {
-    removeFromFavorite(recipe);
-  };
-
-  const isExist = recipe => {
-    if (favorite.filter(item => item.id === recipe.id).length > 0) {
-      return true;
-    }
-    return false;
   };
 
   return (
@@ -122,7 +40,10 @@ const Home = ({navigation}) => {
         />
         <View style={styles.container}>
           <Gap height={20} />
-          <Text style={styles.title}>Top Recipes</Text>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}> Top Recipes</Text>
+          </View>
+
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.cardContainer}>
               {recipes
@@ -140,65 +61,22 @@ const Home = ({navigation}) => {
                 })}
             </View>
           </ScrollView>
-          <TextInput
-            placeholder="Search Recipes"
-            onChangeText={text => searchFilterFunction(text)}
-          />
+
           <Gap height={20} />
           <BannerAds />
           <Gap height={20} />
-          {recipes.map(item => {
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}> Liked Recipes</Text>
+          </View>
+          {favorites.map(favorite => {
             return (
-              <View style={{flex: 1, flexDirection: 'row', marginTop: 10}}>
-                <View
-                  style={{
-                    flex: 1,
-                    backgroundColor: 'white',
-                    flexDirection: 'row',
-                    padding: 10,
-                  }}>
-                  <TouchableOpacity
-                    style={{flexDirection: 'row'}}
-                    onPress={() => navigation.navigate('Detail', item)}>
-                    <Image
-                      source={{uri: item.image}}
-                      style={{width: 40, height: 40}}
-                    />
-                    <View style={styles.itemRecipes}>
-                      <Text style={styles.textItem}>{item.judul}</Text>
-                      <Rating number={item.rating} />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                {isExist(item) ? (
-                  <TouchableOpacity
-                    onPress={() => onTapRemoveFromFavorite(item)}
-                    style={{
-                      flex: 1,
-                      padding: 10,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: 'white',
-                    }}>
-                    <Image
-                      source={IconFavActive}
-                      style={{width: 30, height: 30}}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => onTapAddToFavorite(item)}
-                    style={{
-                      flex: 1,
-                      padding: 10,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: 'white',
-                    }}>
-                    <Image source={IconFav} style={{width: 30, height: 30}} />
-                  </TouchableOpacity>
-                )}
-              </View>
+              <FoodListItem
+                key={favorite.id}
+                name={favorite.judul}
+                image={{uri: favorite.image}}
+                rating={favorite.rating}
+                onPress={() => navigation.navigate('Detail', favorite)}
+              />
             );
           })}
         </View>
@@ -244,5 +122,9 @@ const styles = StyleSheet.create({
   itemRecipes: {
     paddingLeft: 5,
     justifyContent: 'center',
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

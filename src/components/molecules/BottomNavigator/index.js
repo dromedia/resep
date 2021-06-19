@@ -7,14 +7,18 @@ import {
   IconOrderOff,
   IconProfileOn,
   IconProfileOff,
+  IconRestaurant,
+  IconRestaurantActive,
+  IconGrid,
+  IconGridActive,
 } from '../../../assets/';
 
 const Icon = ({label, focus}) => {
   switch (label) {
     case 'Home':
-      return focus ? <IconHomeOn /> : <IconHomeOff />;
-    case 'Liked':
-      return focus ? <IconOrderOn /> : <IconOrderOff />;
+      return focus ? <IconGridActive /> : <IconGrid />;
+    case 'FoodScreen':
+      return focus ? <IconRestaurantActive /> : <IconRestaurant />;
     case 'About':
       return focus ? <IconProfileOn /> : <IconProfileOff />;
     default:

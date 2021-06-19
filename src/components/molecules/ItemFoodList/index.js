@@ -1,26 +1,18 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
-const ItemFoodList = ({
-  data,
-  keyExtractor,
-  ItemSeparatorComponent,
-  enableEmptySections,
-  renderItem,
-  ListFooterComponent,
-}) => {
+const ItemFoodList = () => {
   return (
-    <FlatList
-      data={data}
-      keyExtractor={keyExtractor}
-      ItemSeparatorComponent={ItemSeparatorComponent}
-      enableEmptySections={enableEmptySections}
-      renderItem={renderItem}
-      ListFooterComponent={ListFooterComponent}
-    />
+    <View style={styles.container}>
+      <Text>Item List</Text>
+    </View>
   );
 };
 
 export default ItemFoodList;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

@@ -7,6 +7,7 @@ import IngredientCard from './IngredientCard';
 import InstructionCard from './InstructionCard';
 import ModalCard from './ModalCard';
 import FoodListItem from './FoodListItem';
+import Loading from './Loading';
 
 export {
   Header,
@@ -18,4 +19,5 @@ export {
   InstructionCard,
   ModalCard,
   FoodListItem,
+  Loading,
 };

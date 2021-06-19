@@ -1,42 +1,38 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  AdEventType,
+  InterstitialAd,
+  TestIds,
+} from '@react-native-firebase/admob';
 import React, {useEffect, useState} from 'react';
 import {
+  Image,
+  ImageBackground,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
-  View,
-  ImageBackground,
-  SafeAreaView,
   TouchableOpacity,
-  StatusBar,
-  ScrollView,
-  Modal,
-  Image,
-  Animated,
+  View,
 } from 'react-native';
-import {IconClose, IconBackWhite, IconFavActive} from '../../assets';
+import {IconBackWhite, IconClose} from '../../assets';
 import {
-  Header,
-  Gap,
   Button,
+  Gap,
   IngredientCard,
-  InterstitialAds,
-  BottomPopup,
   InstructionCard,
   Rating,
 } from '../../components';
 import Constant from '../../config/Constant';
-import {
-  InterstitialAd,
-  RewardedAd,
-  TestIds,
-  AdEventType,
-} from '@react-native-firebase/admob';
 
 const Detail = ({navigation, route}) => {
-  // const adUnitId = __DEV__
-  //   ? TestIds.INTERSTITIAL
-  //   : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+  const adUnitId = __DEV__
+    ? TestIds.INTERSTITIAL
+    : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
-  const adUnitId = Constant.ADMOB.IntersUnitID;
+  // const adUnitId = Constant.ADMOB.IntersUnitID;
 
   const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
@@ -49,6 +45,28 @@ const Detail = ({navigation, route}) => {
     const [loaded, setLoaded] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
+    const setIklan = async () => {
+      try {
+        const value = await AsyncStorage.getItem('play_ad_times');
+        if (value !== null) {
+          if (value == '4') {
+            await AsyncStorage.setItem('play_ad_times', '1');
+            console.log('Iklan Siap ditayangkan');
+            interstitial.load();
+          } else {
+            var temp = parseInt(value) + 1;
+            await AsyncStorage.setItem('play_ad_times', temp.toString());
+            console.log(temp);
+          }
+        } else {
+          await AsyncStorage.setItem('play_ad_times', '1');
+          interstitial.load();
+        }
+      } catch (error) {
+        await AsyncStorage.setItem('play_ad_times', '1');
+      }
+    };
+
     useEffect(() => {
       const eventListener = interstitial.onAdEvent(type => {
         if (type === AdEventType.LOADED) {
@@ -56,7 +74,6 @@ const Detail = ({navigation, route}) => {
         }
         if (type === AdEventType.CLOSED) {
           setShowModal(!true);
-          console.log('Ads Closed');
           setLoaded(false);
         }
         if (type === AdEventType.ERROR) {
@@ -64,12 +81,7 @@ const Detail = ({navigation, route}) => {
         }
       });
 
-      let expirationDate;
-
-      if (!expirationDate || new Date() > expirationDate) {
-        expirationDate = new Date(new Date().getTime() + 2 * 60 * 1000);
-        interstitial.load();
-      }
+      setIklan();
 
       // Unsubscribe from events on unmount
       return () => {
@@ -77,7 +89,7 @@ const Detail = ({navigation, route}) => {
       };
     }, []);
 
-    // No advert ready to show yet
+    // Iklan belum Siap
     if (!loaded) {
       return (
         <View>
@@ -93,7 +105,10 @@ const Detail = ({navigation, route}) => {
                   onPress={() => {
                     setShowModal(!showModal);
                   }}>
-                  <Image source={IconClose} style={{height: 30, width: 30}} />
+                  <Image
+                    source={IconClose}
+                    style={{height: 30, width: 30, marginRight: 10}}
+                  />
                 </TouchableOpacity>
               </View>
               <Gap height={12} />
@@ -113,8 +128,6 @@ const Detail = ({navigation, route}) => {
 
           <Button
             text="Show Instruction"
-            color={Constant.COLOR.Red}
-            textColor="white"
             onPress={() => setShowModal(!showModal)}
           />
         </View>
@@ -135,7 +148,10 @@ const Detail = ({navigation, route}) => {
                 onPress={() => {
                   interstitial.show();
                 }}>
-                <Image source={IconClose} style={{height: 30, width: 30}} />
+                <Image
+                  source={IconClose}
+                  style={{height: 30, width: 30, marginRight: 10}}
+                />
               </TouchableOpacity>
             </View>
             <Gap height={12} />
@@ -153,6 +169,7 @@ const Detail = ({navigation, route}) => {
           </View>
         </Modal>
 
+        {/* Button Ads Siap */}
         <Button
           text="Show Instruction"
           onPress={() => setShowModal(!showModal, judul)}
@@ -174,7 +191,7 @@ const Detail = ({navigation, route}) => {
           <View style={styles.menubar}>
             <View style={styles.backBtn}>
               <TouchableOpacity>
-                <IconBackWhite onPress={() => navigation.navigate('Home')} />
+                <IconBackWhite onPress={() => navigation.goBack()} />
               </TouchableOpacity>
             </View>
           </View>
@@ -273,7 +290,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     flex: 1,
-    padding: 10,
+    // padding: 10,
   },
   textModal: {
     marginTop: 2,
@@ -283,7 +300,8 @@ const styles = StyleSheet.create({
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 10,
+    padding: 20,
+    backgroundColor: Constant.COLOR.Primary,
   },
   instructionContainer: {
     marginTop: 30,

@@ -14,6 +14,12 @@ import IconNext from './ic-next.svg';
 import IconClose from './x.png';
 import IconFavActive from './ic-fav-active.png';
 import IconFav from './ic-fav.png';
+import IconX from './ic-x.svg';
+import IconSearch from './ic-search.svg';
+import IconRestaurant from './ic-restaurant.svg';
+import IconRestaurantActive from './ic-restaurant-active.svg';
+import IconGrid from './ic-grid.svg';
+import IconGridActive from './ic-grid-active.svg';
 
 export {
   IconBack,
@@ -32,4 +38,10 @@ export {
   IconClose,
   IconFavActive,
   IconFav,
+  IconX,
+  IconSearch,
+  IconRestaurant,
+  IconRestaurantActive,
+  IconGrid,
+  IconGridActive,
 };

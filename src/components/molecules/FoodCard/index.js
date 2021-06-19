@@ -31,9 +31,8 @@ const styles = StyleSheet.create({
     elevation: 14,
     overflow: 'hidden',
     marginRight: 24,
-    // marginVertical: 24,
     marginTop: 15,
-    width: 250,
+    width: 230,
   },
   rating: {
     flexDirection: 'row',
@@ -48,8 +47,8 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   image: {
-    width: 250,
-    height: 80,
+    width: 230,
+    height: 140,
     resizeMode: 'cover',
   },
 });

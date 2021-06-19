@@ -1,4 +1,7 @@
 export default {
+  NAMA: {
+    Aplikasi: 'Resep Makanan',
+  },
   ADMOB: {
     IntersUnitID: 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy',
   },

@@ -1,14 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {Rating} from '..';
-import {IconFav} from '../../../assets';
+import {IconFav, IconNext} from '../../../assets';
 import Constant from '../../../config/Constant';
 import {Gap} from '../../atoms';
 
-const FoodListItem = ({name, image, rating, onPress, onPressFav}) => {
+const FoodListItem = ({name, image, rating, onPress}) => {
   return (
     <View style={{flex: 1, flexDirection: 'row'}}>
-      {/* container recipes  */}
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.7}
@@ -20,14 +19,6 @@ const FoodListItem = ({name, image, rating, onPress, onPressFav}) => {
           <Rating number={rating} />
         </View>
       </TouchableOpacity>
-      <View style={styles.containerFav}>
-        <TouchableOpacity
-          onPress={onPressFav}
-          activeOpacity={0.7}
-          style={styles.buttonFav}>
-          <Image source={IconFav} style={{width: 30, height: 30}} />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -41,8 +32,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     flexDirection: 'row',
     padding: 10,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderRadius: 10,
   },
   containerFav: {
     flex: 1,

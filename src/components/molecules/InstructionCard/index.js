@@ -1,11 +1,13 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Constant from '../../../config/Constant';
+import {Button} from '../../../components';
 
 const InstructionCard = ({nomer, data}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>• {data}</Text>
+      <View></View>
     </View>
   );
 };
