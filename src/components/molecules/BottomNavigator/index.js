@@ -19,7 +19,7 @@ const Icon = ({label, focus}) => {
       return focus ? <IconGridActive /> : <IconGrid />;
     case 'FoodScreen':
       return focus ? <IconRestaurantActive /> : <IconRestaurant />;
-    case 'About':
+    case 'FavoriteScreen':
       return focus ? <IconProfileOn /> : <IconProfileOff />;
     default:
       return focus ? <IconOrderOn /> : <IconOrderOff />;

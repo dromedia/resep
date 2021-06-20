@@ -17,7 +17,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {IconBackWhite, IconClose} from '../../assets';
+import {IconBackWhite, IconClose, IconFav, IconFavActive} from '../../assets';
 import {
   Button,
   Gap,
@@ -28,6 +28,32 @@ import {
 import Constant from '../../config/Constant';
 
 const Detail = ({navigation, route}) => {
+  const [favorites, setFavorites] = useState([]);
+  const {judul, image, rating, title, ingredient, instruction, content, id} =
+    route.params;
+
+  useEffect(async () => {
+    cekFavorite();
+  }, []);
+
+  const cekFavorite = async () => {
+    try {
+      const recipeFavorites = await AsyncStorage.getItem('recipe_fav');
+      if (recipeFavorites !== null) {
+        setFavorites(JSON.parse(recipeFavorites));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isExist = id => {
+    if (favorites.filter(favorite => favorite.id === id).length > 0) {
+      return true;
+    }
+    return false;
+  };
+
   const adUnitId = __DEV__
     ? TestIds.INTERSTITIAL
     : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
@@ -38,8 +64,6 @@ const Detail = ({navigation, route}) => {
     requestNonPersonalizedAdsOnly: true,
     keywords: ['fashion', 'clothing'],
   });
-  const {judul, image, rating, title, ingredient, instruction, content, id} =
-    route.params;
 
   function ButtonModal() {
     const [loaded, setLoaded] = useState(false);
@@ -51,12 +75,12 @@ const Detail = ({navigation, route}) => {
         if (value !== null) {
           if (value == '4') {
             await AsyncStorage.setItem('play_ad_times', '1');
-            console.log('Iklan Siap ditayangkan');
+            // console.log('Iklan Siap ditayangkan');
             interstitial.load();
           } else {
             var temp = parseInt(value) + 1;
             await AsyncStorage.setItem('play_ad_times', temp.toString());
-            console.log(temp);
+            // console.log(temp);
           }
         } else {
           await AsyncStorage.setItem('play_ad_times', '1');
@@ -219,7 +243,21 @@ const Detail = ({navigation, route}) => {
                 backgroundColor: 'transparent',
                 padding: 10,
               }}>
-              <Rating number={rating} />
+              {/* <Rating number={rating} /> */}
+              <View style={styles.containerFav}>
+                {isExist(id) ? (
+                  <View style={styles.buttonFav}>
+                    <Image
+                      source={IconFavActive}
+                      style={{width: 30, height: 30}}
+                    />
+                  </View>
+                ) : (
+                  <View style={styles.buttonFav}>
+                    <Image source={IconFav} style={{width: 30, height: 30}} />
+                  </View>
+                )}
+              </View>
             </View>
           </View>
           {ingredient.map((itemIngredient, index) => {

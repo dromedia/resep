@@ -1,5 +1,6 @@
 const initHome = {
   recipes: [],
+  favorites: [],
 };
 
 export const homeReducer = (state = initHome, action) => {
@@ -7,6 +8,12 @@ export const homeReducer = (state = initHome, action) => {
     return {
       ...state,
       recipes: action.value,
+    };
+  }
+  if (action.type === 'GET_FAVORITES') {
+    return {
+      ...state,
+      favorites: action.value,
     };
   }
 

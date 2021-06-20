@@ -10,6 +10,7 @@ import {
   Instruction,
   FoodScreen,
   Gdpr,
+  FavoriteScreen,
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BannerAds, BottomNavigator} from '../components';
@@ -22,7 +23,7 @@ const MainApp = () => {
     <Tab.Navigator tabBar={props => <BottomNavigator {...props} />}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="FoodScreen" component={FoodScreen} />
-      <Tab.Screen name="About" component={About} />
+      <Tab.Screen name="FavoriteScreen" component={FavoriteScreen} />
     </Tab.Navigator>
   );
 };

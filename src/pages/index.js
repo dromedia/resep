@@ -6,6 +6,7 @@ import FoodScreen from './FoodScreen';
 import Detail from './Detail';
 import Instruction from './Instruction';
 import Gdpr from './Gdpr';
+import FavoriteScreen from './FavoriteScreen';
 
 export {
   SplashScreen,
@@ -16,4 +17,5 @@ export {
   Detail,
   Instruction,
   Gdpr,
+  FavoriteScreen,
 };

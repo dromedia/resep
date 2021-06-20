@@ -158,11 +158,18 @@ const FoodScreen = ({navigation}) => {
           onChangeText={text => searchFilter(text)}
           placeholder="Search Recipes..."
           value={search}
-          containerStyle={{backgroundColor: 'white', borderRadius: 10}}
+          containerStyle={{
+            backgroundColor: 'white',
+            borderRadius: 10,
+            height: 60,
+            // alignItems: 'center',
+            justifyContent: 'center',
+          }}
           inputContainerStyle={{
             backgroundColor: 'white',
+            height: 40,
           }}
-          inputStyle={{fontFamily: 'Poppins-Regular'}}
+          inputStyle={{fontFamily: 'Poppins-Regular', height: 40, fontSize: 12}}
         />
         <Gap height={20} />
         <FlatList

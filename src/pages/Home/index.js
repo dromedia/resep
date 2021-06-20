@@ -1,34 +1,17 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {BannerAds, FoodCard, FoodListItem, Gap, Header} from '../../components';
+import {BannerAds, FoodCard, Gap, Header} from '../../components';
 import Constant from '../../config/Constant';
 import {getRecipesData} from '../../redux/action';
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const {recipes} = useSelector(state => state.homeReducer);
-  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     dispatch(getRecipesData());
   }, [dispatch]);
-
-  useEffect(() => {
-    getFavorites();
-  }, [favorites]);
-
-  const getFavorites = async () => {
-    try {
-      const recipeFavorites = await AsyncStorage.getItem('recipe_fav');
-      if (recipeFavorites !== null) {
-        setFavorites(JSON.parse(recipeFavorites));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <ScrollView>
@@ -65,20 +48,6 @@ const Home = ({navigation}) => {
           <Gap height={20} />
           <BannerAds />
           <Gap height={20} />
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}> Liked Recipes</Text>
-          </View>
-          {favorites.map(favorite => {
-            return (
-              <FoodListItem
-                key={favorite.id}
-                name={favorite.judul}
-                image={{uri: favorite.image}}
-                rating={favorite.rating}
-                onPress={() => navigation.navigate('Detail', favorite)}
-              />
-            );
-          })}
         </View>
         <Gap height={30} />
       </View>
